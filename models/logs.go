@@ -1,7 +1,9 @@
 // models/logs.go
 package models
 
-import "gorm.io/gorm"
+import (
+	"time"
+)
 
 type LogReportDeploy struct {
 	ID                    uint64 `gorm:"primaryKey"`
@@ -10,12 +12,12 @@ type LogReportDeploy struct {
 	ClientUniqueID        string
 	PreviousLabel         string
 	PreviousDeploymentKey string
-	CreatedAt             gorm.DeletedAt
+	CreatedAt             time.Time
 }
 
 type LogReportDownload struct {
 	ID             uint64 `gorm:"primaryKey"`
 	PackageID      uint
 	ClientUniqueID string
-	CreatedAt      gorm.DeletedAt
+	CreatedAt      time.Time
 }

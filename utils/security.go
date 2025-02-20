@@ -29,7 +29,11 @@ func VerifyPassword(password, hash string) bool {
 }
 
 func RandToken(length int) string {
-	return uuid.New().String()[:length]
+	uuidStr := uuid.New().String()
+	if length > len(uuidStr) {
+		length = len(uuidStr) // Ensure length does not exceed the UUID string length
+	}
+	return uuidStr[:length]
 }
 
 func BoolToUint8(b bool) uint8 {

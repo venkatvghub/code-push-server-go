@@ -1,7 +1,11 @@
 // models/packages.go
 package models
 
-import "gorm.io/gorm"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type Package struct {
 	ID                  uint `gorm:"primaryKey"`
@@ -16,8 +20,8 @@ type Package struct {
 	Label               string
 	OriginalLabel       string
 	OriginalDeployment  string
-	UpdatedAt           gorm.DeletedAt
-	CreatedAt           gorm.DeletedAt
+	UpdatedAt           time.Time
+	CreatedAt           time.Time
 	ReleasedBy          uint64
 	IsMandatory         uint8
 	IsDisabled          uint8
@@ -31,8 +35,8 @@ type PackageDiff struct {
 	DiffAgainstPackageHash string
 	DiffBlobURL            string
 	DiffSize               uint
-	UpdatedAt              gorm.DeletedAt
-	CreatedAt              gorm.DeletedAt
+	UpdatedAt              time.Time
+	CreatedAt              time.Time
 	DeletedAt              gorm.DeletedAt
 }
 
@@ -43,7 +47,7 @@ type PackageMetrics struct {
 	Downloaded uint
 	Failed     uint
 	Installed  uint
-	UpdatedAt  gorm.DeletedAt
-	CreatedAt  gorm.DeletedAt
+	UpdatedAt  time.Time
+	CreatedAt  time.Time
 	DeletedAt  gorm.DeletedAt
 }

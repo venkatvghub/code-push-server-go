@@ -26,7 +26,9 @@ func (ctrl *AuthController) Login(c *gin.Context) {
 	}
 
 	var user models.User
-	if err := ctrl.DB.Where("email = ? OR username = ?", input.Account, input.Account).First(&user).Error; err != nil {
+	if err := ctrl.DB.Where("email = ? OR username = ?", input.Account, input.Account).
+		Select("id, email, username, password, ack_code").
+		First(&user).Error; err != nil {
 		c.JSON(http.StatusOK, gin.H{"status": "ERROR", "message": "Invalid email or password"})
 		return
 	}
@@ -77,7 +79,7 @@ func (ctrl *AuthController) Register(c *gin.Context) {
 		Password:  utils.HashPassword(input.Password),
 		Identical: utils.RandToken(9),
 		AckCode:   utils.RandToken(5),
-		CreatedAt: gorm.DeletedAt{Time: time.Now()},
+		CreatedAt: time.Now(),
 	}
 	if err := ctrl.DB.Create(&user).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": "ERROR", "message": "Failed to register user"})

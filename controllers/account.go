@@ -27,7 +27,7 @@ func (ctrl *AccountController) GetAccessKeys(c *gin.Context) {
 	for i, token := range tokens {
 		result[i] = gin.H{
 			"name":         "(hidden)",
-			"createdTime":  token.CreatedAt.Time.UnixMilli(),
+			"createdTime":  token.CreatedAt.UnixMilli(),
 			"createdBy":    token.CreatedBy,
 			"expires":      token.ExpiresAt.Time.UnixMilli(),
 			"friendlyName": token.Name,

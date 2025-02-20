@@ -1,7 +1,11 @@
 // models/users.go
 package models
 
-import "gorm.io/gorm"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type UserToken struct {
 	ID          uint64 `gorm:"primaryKey"`
@@ -12,7 +16,8 @@ type UserToken struct {
 	Description string
 	IsSession   uint8
 	ExpiresAt   gorm.DeletedAt
-	CreatedAt   gorm.DeletedAt
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 	DeletedAt   gorm.DeletedAt
 }
 
@@ -23,6 +28,6 @@ type User struct {
 	Email     string
 	Identical string
 	AckCode   string
-	UpdatedAt gorm.DeletedAt
-	CreatedAt gorm.DeletedAt
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }

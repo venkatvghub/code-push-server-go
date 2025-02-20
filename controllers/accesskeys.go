@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"log"
 	"net/http"
 	"time"
 
@@ -39,6 +40,7 @@ func (ctrl *AccessKeysController) CreateAccessKey(c *gin.Context) {
 	}
 
 	newAccessKey := utils.RandToken(40)
+	log.Printf("newAccessKey: %s\n", newAccessKey)
 	token := models.UserToken{
 		UID:         uid,
 		Name:        input.FriendlyName,
