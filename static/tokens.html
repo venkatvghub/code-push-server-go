@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Obtain token</title>
+    <meta name="keywords" content="code-push-server,code-push,react-native,cordova">
+    <meta name="description" content="CodePush service is hotupdate services which adapter react-native-code-push and cordova-plugin-code-push">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/common.css">
+</head>
+<body>
+    <h1 style="text-align: center;">Obtain token</h1>
+    <div class="site-notice">
+        <a id="submitBtn" class="btn btn-lg btn-primary">Obtain token</a>
+    </div>
+    <div class="form-group" id="tipsSuccess" style="display:none">
+        <h2 style="text-align: center;">Authentication succeeded.</h2>
+        <h2 style="text-align: center;">Please copy and paste this access key to the command window:</h2>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-6">
+            <input id="key" class="form-control" style="display:none" readonly>
+        </div>
+    </div>
+    <br>
+    <div class="form-group" id="tipsClose" style="display:none">
+        <h2 style="text-align: center;">After doing so, please close this browser.</h2>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/static/js/common.js"></script>
+    <script src="/static/js/tokens.js"></script>
+</body>
+</html>
