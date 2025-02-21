@@ -1,10 +1,13 @@
 package config
 
 import (
+	"log"
 	"os"
 	"strconv"
 
 	"github.com/joho/godotenv"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 type Config struct {
@@ -16,12 +19,20 @@ type Config struct {
 	Storage StorageConfig
 }
 
+type SSLConfig struct {
+	Cert string
+	Key  string
+}
+
 type DBConfig struct {
 	Username string
 	Password string
 	Host     string
 	Port     string
 	Database string
+	SSLMode  string
+	SSL      SSLConfig
+	TimeZone string
 }
 
 type JWTConfig struct {
@@ -70,6 +81,8 @@ func LoadConfig() Config {
 			Host:     getEnv("RDS_HOST", "127.0.0.1"),
 			Port:     getEnv("RDS_PORT", "3306"),
 			Database: getEnv("RDS_DATABASE", "codepush"),
+			TimeZone: getEnv("DB_TIMEZONE", "Asia/Calcutta"),
+			SSLMode:  getEnv("DB_SSLMODE", "disable"),
 		},
 		JWT: JWTConfig{
 			TokenSecret: getEnv("TOKEN_SECRET", "INSERT_RANDOM_TOKEN_KEY"),
@@ -119,4 +132,13 @@ func getEnvInt(key string, defaultValue int) int {
 		}
 	}
 	return defaultValue
+}
+
+func InitDB(dbConfig *DBConfig) *gorm.DB {
+	dsn := "host=" + dbConfig.Host + " user=" + dbConfig.Username + " password=" + dbConfig.Password + " dbname=" + dbConfig.Database + " port=" + dbConfig.Port + " sslmode=" + dbConfig.SSLMode + " TimeZone=" + dbConfig.TimeZone
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatal("Failed to connect to database:", err)
+	}
+	return db
 }

@@ -11,7 +11,6 @@ import (
 	"github.com/venkatvghub/code-push-server-go/models"
 	"github.com/venkatvghub/code-push-server-go/services"
 	"github.com/venkatvghub/code-push-server-go/utils"
-	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
@@ -46,18 +45,13 @@ func SetupRoutes(r *gin.Engine) {
 
 func main() {
 	// Initialize configuration
-	config := config.LoadConfig()
+	cfg := config.LoadConfig()
 
 	// Database connection
-	dsn := config.DB.Username + ":" + config.DB.Password + "@tcp(" + config.DB.Host + ":" + config.DB.Port + ")/" + config.DB.Database + "?charset=utf8&parseTime=True&loc=Local"
-	var err error
-	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	if err != nil {
-		log.Fatal("Failed to connect to database:", err)
-	}
+	db = config.InitDB(&cfg.DB)
 
 	// Auto migrate models
-	err = db.AutoMigrate(
+	err := db.AutoMigrate(
 		&models.App{}, &models.Collaborator{}, &models.Deployment{}, &models.DeploymentHistory{},
 		&models.DeploymentVersion{}, &models.Package{}, &models.PackageDiff{}, &models.PackageMetrics{},
 		&models.UserToken{}, &models.User{}, &models.Version{}, &models.LogReportDeploy{}, &models.LogReportDownload{},
@@ -78,7 +72,7 @@ func main() {
 	SetupRoutes(r)
 
 	// Start server
-	err = r.Run(config.Host + ":" + config.Port)
+	err = r.Run(cfg.Host + ":" + cfg.Port)
 	if err != nil {
 		log.Fatal("Failed to start server:", err)
 	}
