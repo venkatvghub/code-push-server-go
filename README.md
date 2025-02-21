@@ -1,6 +1,6 @@
 # CodePush Server
 
-A Go-based implementation of a CodePush server for managing Over-The-Air (OTA) updates for mobile applications. This server allows mobile app developers to push updates directly to their users' devices without going through the app store review process.
+A Go-based implementation of a CodePush server for managing Over-The-Air (OTA) updates for mobile applications. This server allows mobile app developers to push updates directly to their users' devices without going through the app store review process. Inspired from https://github.com/shm-open/code-push-server
 
 ## Features
 
@@ -58,21 +58,40 @@ cd code-push-server
 
 2. Create a `.env` file in the root directory:
 ```env
-# Database Configuration
+# Server settings
+HOST=0.0.0.0
+PORT=8080
+
+# Database settings
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
 DB_HOST=localhost
 DB_PORT=5432
-DB_USER=postgres
-DB_NAME=codepushv1
-DB_PASSWORD=postgres
-DB_SSLMODE=disable
+DB_DATABASE=codepush
+DB_SSL_MODE=disable
+DB_TIMEZONE=Asia/Calcutta
+# JWT settings
+TOKEN_SECRET=INSERT_RANDOM_TOKEN_KEY
 
-# JWT Configuration
-JWT_SECRET_KEY=your-secret-key-should-be-very-long-and-secure
-JWT_TOKEN_DURATION=24h
+# Common settings
+ALLOW_REGISTRATION=true
+TRY_LOGIN_TIMES=4
+DIFF_NUMS=3
+TEMP_DIR=/tmp/codepush_temp
 
-# Server Configuration
-SERVER_PORT=8080
-ENV=development
+# Storage settings
+STORAGE_TYPE=local  # Options: local, s3
+LOCAL_STORAGE_DIR=/tmp/codepush
+LOCAL_DOWNLOAD_URL=http://127.0.0.1:8080/download
+LOCAL_PUBLIC=/download
+
+# S3 settings (required if STORAGE_TYPE=s3)
+## For local testing, you can use minio (from docker-compose.yml)
+AWS_ACCESS_KEY_ID=minioadmin
+AWS_SECRET_ACCESS_KEY=minioadmin
+AWS_REGION=us-east-1
+AWS_BUCKET_NAME=codepush
+AWS_DOWNLOAD_URL=http://localhost:9001/buckets/code-push-server
 ```
 
 3. Initialize the database:
