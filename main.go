@@ -6,17 +6,16 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/venkatvghub/code-push-server-go/config"
-	"github.com/venkatvghub/code-push-server-go/controllers"
 	"github.com/venkatvghub/code-push-server-go/middleware"
 	"github.com/venkatvghub/code-push-server-go/models"
-	"github.com/venkatvghub/code-push-server-go/services"
+	"github.com/venkatvghub/code-push-server-go/routes"
 	"github.com/venkatvghub/code-push-server-go/utils"
 	"gorm.io/gorm"
 )
 
 var db *gorm.DB
 
-func SetupRoutes(r *gin.Engine) {
+/*func SetupRoutes(r *gin.Engine) {
 	authCtrl := controllers.AuthController{DB: db}
 	indexCtrl := controllers.IndexController{DB: db, ClientSvc: services.NewClientService(db)}
 	usersCtrl := controllers.UsersController{DB: db}
@@ -37,10 +36,15 @@ func SetupRoutes(r *gin.Engine) {
 	appsCtrl.SetupRoutes(r)
 	indexV1Ctrl.SetupRoutes(r)
 
-	// Serve static files only for local storage
+}*/
+
+func setupStaticRoutes(r *gin.Engine) {
 	if utils.Config.Storage.Type == "local" {
 		r.Static("/download", utils.Config.Storage.Local.StorageDir)
 	}
+	// Static files
+	r.Static("/static", "./static")
+	r.LoadHTMLGlob("static/*.html")
 }
 
 func main() {
@@ -65,11 +69,8 @@ func main() {
 	r.Use(middleware.LoggerMiddleware())
 
 	// Static files
-	r.Static("/static", "./static")
-	r.LoadHTMLGlob("static/*.html")
-
-	// Register routes
-	SetupRoutes(r)
+	setupStaticRoutes(r)
+	routes.SetupRoutes(r, db)
 
 	// Start server
 	err = r.Run(cfg.Host + ":" + cfg.Port)
