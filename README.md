@@ -100,7 +100,9 @@ go run sql/main.go migrate
 go run sql/main.go seed  # Optional: Add sample data
 ```
 
-4. Start the server:
+4. You can open the connection [GRC Passwords](https://www.grc.com/passwords.htm) to obtain a randomly generated number of type 63 random alpha-numeric characters as the key
+
+5. Start the server:
 ```bash
 go run main.go
 ```
@@ -146,7 +148,7 @@ Authorization: Bearer <your-jwt-token>
 ### Running in Development Mode
 ```bash
 ENV=development go run main.go
-```
+``` 
 
 ### Database Migrations
 Database schema changes are managed through GORM's AutoMigrate feature and the SQL migration tool:
